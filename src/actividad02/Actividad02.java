@@ -66,13 +66,13 @@ public class Actividad02 {
 			// Depende de la zona
 			switch (zona.toLowerCase()) { // Lo pasamos a minúscula para evitar confusiones
 			case "principal":
-				venderPpal();
+				venderZona("Principal");
 				break;
 			case "platea":
-				venderPlatea();
+				venderZona("Platea");
 				break;
 			case "vip":
-				venderVip();
+				venderZona("VIP");
 				break;
 			default:
 				System.out.println("ERROR. No ha introducido una zona válida.");
@@ -82,46 +82,44 @@ public class Actividad02 {
 		}
 	}
 
-	// Venta de entradas de zona Principal
-	public static void venderPpal() {
-		System.out.println("¿Cuántas entradas desea comprar en la Zona Principal?: ");
-		int compra = sc.nextInt();
-		sc.nextLine(); // Limpiar búffer
-		if ((entradasPpal - compra) < 0) { // Si la diferencia con la cantidad de entradas vendidas es negativa
-			System.out.println("ERROR. No hay suficientes entradas disponibles para tal cantidad.");
-		} else {
-			entradasPpal -= compra;
-			System.out.println("Se han vendido " + compra + " entradas de la Zona Principal con éxito.");
-			numTotalEntradas -= compra; // Modifica el total de entradas con esta venta
-		}
-	}
+	public static void venderZona(String zona) {
+	    int entradasDisponibles = 0;
 
-	// Venta de entradas de zona Platea
-	public static void venderPlatea() {
-		System.out.println("¿Cuántas entradas desea comprar en la Zona Platea?: ");
-		int compra = sc.nextInt();
-		sc.nextLine(); // Limpiar búffer
-		if ((entradasPlatea - compra) < 0) {
-			System.out.println("ERROR. No hay suficientes entradas disponibles para tal cantidad.");
-		} else {
-			entradasPlatea -= compra;
-			System.out.println("Se han vendido " + compra + " entradas de la Zona Platea con éxito.");
-			numTotalEntradas -= compra;
-		}
-	}
+	    // Determinar qué variable se va a modificar
+	    switch (zona.toLowerCase()) {
+	        case "principal":
+	            entradasDisponibles = entradasPpal;
+	            break;
+	        case "platea":
+	            entradasDisponibles = entradasPlatea;
+	            break;
+	        case "vip":
+	            entradasDisponibles = entradasVip;
+	            break;
+	    }
 
-	// Venta de entradas de zona VIP
-	public static void venderVip() {
-		System.out.println("¿Cuántas entradas desea comprar en la Zona VIP?: ");
-		int compra = sc.nextInt();
-		sc.nextLine(); // Limpiar búffer
-		if ((entradasVip - compra) < 0) {
-			System.out.println("ERROR. No hay suficientes entradas disponibles para tal cantidad.");
-		} else {
-			entradasVip -= compra;
-			System.out.println("Se han vendido " + compra + " entradas de la Zona VIP con éxito.");
-			numTotalEntradas -= compra;
-		}
+	    System.out.println("¿Cuántas entradas desea comprar en la zona " + zona + "?: ");
+	    int compra = sc.nextInt();
+	    sc.nextLine(); // Limpiar búfer
+
+	    if (compra > entradasDisponibles) {
+	        System.out.println("ERROR. Solo quedan " + entradasDisponibles + " entradas disponibles.");
+	    } else {
+	        // Restar las entradas compradas a la variable correcta
+	        switch (zona.toLowerCase()) {
+	            case "principal":
+	                entradasPpal -= compra;
+	                break;
+	            case "platea":
+	                entradasPlatea -= compra;
+	                break;
+	            case "vip":
+	                entradasVip -= compra;
+	                break;
+	        }
+	        numTotalEntradas -= compra;
+	        System.out.println("Se han vendido " + compra + " entradas de la zona " + zona + " con éxito.");
+	    }
 	}
 
 }
